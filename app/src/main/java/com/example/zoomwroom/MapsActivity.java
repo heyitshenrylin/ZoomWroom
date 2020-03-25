@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.zoomwroom.Entities.Location;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Author : Henry Lin
  * Creates a google map fragment where markers can be placed
  *
- * @see com.example.zoomwroom.Location
+ * @see Location
  * @see com.google.android.gms.maps.GoogleMap
  *
  * Modified source from: https://developers.google.com/maps/documentation/android-sdk/start

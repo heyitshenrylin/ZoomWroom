@@ -1,7 +1,5 @@
 package com.example.zoomwroom.Entities;
 
-import com.example.zoomwroom.Location;
-
 import java.util.Date;
 
 public class DriveRequest {
