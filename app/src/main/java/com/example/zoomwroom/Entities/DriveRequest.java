@@ -1,10 +1,12 @@
 package com.example.zoomwroom.Entities;
 
+
 import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+
 import java.util.Date;
 
 /**
