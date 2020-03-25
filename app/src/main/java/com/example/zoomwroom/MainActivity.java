@@ -3,11 +3,17 @@ package com.example.zoomwroom;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //////////////////////
         // Driver Button
         Button driverBT = findViewById(R.id.DriverBT);
         driverBT.setOnClickListener(new View.OnClickListener() {
@@ -33,26 +38,30 @@ public class MainActivity extends AppCompatActivity {
                 OpenActivityRiderMode();
             }
         });
-        /////////////////////////////////
-
-
-
 
     }
 
-    ////////////////////////////////////////////////
+
+    /**
+     * switch mode between driver and rider
+     */
 
     public void OpenActivityRiderMode(){
         Intent intent = new Intent(this,RiderModeActivity.class);
         startActivity(intent);
     }
 
-    //OpenActivityDriverMode
+    /**
+     * switch mode between driver and rider
+     */
+
     public void OpenActivityDriverMode() {
 
         Intent intent = new Intent(this,DriverModeActivity.class);
         startActivity(intent);
 
     }
+
     ///////////////////////////////////////////////
+
 }

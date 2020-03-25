@@ -2,6 +2,7 @@
 package com.example.zoomwroom;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
 
@@ -13,6 +14,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * Google Maps Activity
@@ -100,7 +104,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Moves markers to the current latlng position
+     * Moves markers to the current latlng position and updates the estimated fare
      */
     public void updateMarkers() {
         LatLng depart = mLocation.getDepart();
@@ -113,5 +117,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             destinationMarker.setPosition(destination);
             destinationMarker.setVisible(true);
         }
+        double price = getPrice(5.00, 0.5);
+        Log.d("Price", Double.toString(price));
+    }
+
+    /**
+     * gets the recommended fare price using formula baseprice + multiplier * distance between points
+     *
+     * @param basePrice
+     * @param multiplier
+     * @return price
+     */
+    public double getPrice(double basePrice, double multiplier) {
+        if(departureMarker.isVisible() && destinationMarker.isVisible()) {
+            double price = basePrice + multiplier *
+                    getDistance(departureMarker.getPosition().latitude,
+                            destinationMarker.getPosition().latitude,
+                            departureMarker.getPosition().longitude,
+                            destinationMarker.getPosition().longitude);
+            return round(price, 2);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * gets distance in kilometers from two latitude/longitude points
+     * by using the haversine formula : https://www.movable-type.co.uk/scripts/latlong.html
+     *
+     * Adapted from javascript code
+     * @return distance
+     */
+    protected double getDistance(double lat1, double lat2, double long1, double long2) {
+        final int R = 6371; // Radius of the earth in Km
+        Double latDistance = toRad(lat1 - lat2);
+        Double lonDistance = toRad(long1
+                - long2);
+        Double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
+                Math.cos(toRad(lat1)) *
+                        Math.cos(toRad(lat2)) *
+                        Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    /**
+     * Rounds a double value to int places
+     * Source: https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
+     * @param value
+     * @param places
+     * @return roundedNum
+     */
+    protected static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    /**
+     * Converts a degree to a radian value
+     * @param value
+     * @return radian
+     */
+    static Double toRad(Double value) {
+        return value * Math.PI / 180;
     }
 }
